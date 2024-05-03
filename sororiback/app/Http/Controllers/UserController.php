@@ -77,20 +77,30 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,'.$user->id,
-            'password' => 'nullable|min:8',
-            'alert_password' => 'required|boolean',
-            'birthdate' => 'required|date',
-            'town' => 'required|exists:towns,id',
-            'gender' => 'required|in:male,female,other'
-        ]);
-
-        $user->update($request->all());
-        return response()->json(['user' => $user], 200);
+        $user = User::find($id);
+        if($user){
+            $request->validate([
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$user->id,
+                'password' => 'nullable|min:8',
+                'alert_password' => 'required|min:8',
+                'birthdate' => 'required|date',
+                'town' => 'required|exists:towns,id',
+                'gender' => 'required|in:male,female,other'
+            ]);
+            $user->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding user'
+            ], 404);
+        }
     }
 
     /**

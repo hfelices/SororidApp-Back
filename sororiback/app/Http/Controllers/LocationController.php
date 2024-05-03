@@ -73,16 +73,26 @@ class LocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Location $location)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'coordinates' => 'required',
-            'user' => 'required|exists:users,id'
-        ]);
-
-        $location->update($request->all());
-        return response()->json(['location' => $location], 200);
+        $location = Location::find($id);
+        if($location){
+            $request->validate([
+                'name' => 'required',
+                'coordinates' => 'required',
+                'user' => 'required|exists:users,id'
+            ]);
+            $location->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $location,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding location'
+            ], 404);
+        }
     }
 
     /**

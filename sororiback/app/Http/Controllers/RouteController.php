@@ -75,18 +75,28 @@ class RouteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Route $route)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'coordinates_start' => 'required',
-            'coordinates_end' => 'required',
-            'time_start' => 'required',
-            'time_end' => 'required',
-            'user' => 'required|exists:users,id'
-        ]);
-
-        $route->update($request->all());
-        return response()->json(['route' => $route], 200);
+        $route = Route::find($id);
+        if($route){
+            $request->validate([
+                'coordinates_start' => 'required',
+                'coordinates_end' => 'required',
+                'time_start' => 'required',
+                'time_end' => 'required',
+                'user' => 'required'
+            ]);
+            $route->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $route,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding route'
+            ], 404);
+        }
     }
 
     /**

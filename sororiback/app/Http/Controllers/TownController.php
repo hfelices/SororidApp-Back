@@ -72,15 +72,25 @@ class TownController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Town $town)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name' => 'required',
-            'region' => 'required|exists:regions,id'
-        ]);
-
-        $town->update($request->all());
-        return response()->json(['town' => $town], 200);
+        $town = Town::find($id);
+        if($town){
+            $request->validate([
+                'name' => 'required',
+                'region' => 'required|exists:regions,id'
+            ]);
+            $town->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $town,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding town'
+            ], 404);
+        }
     }
 
     /**

@@ -74,16 +74,26 @@ class RelationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Relation $relation)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'user_1' => 'exists:users,id',
-            'user_2' => 'exists:users,id',
-            'type' => 'required'
-        ]);
-
-        $relation->update($request->all());
-        return response()->json(['relation' => $relation], 200);
+        $relation = Relation::find($id);
+        if($relation){
+            $request->validate([
+                'user_1' => 'exists:users,id',
+                'user_2' => 'exists:users,id',
+                'type' => 'required'
+            ]);
+            $relation->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $relation,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding relation'
+            ], 404);
+        }
     }
 
     /**

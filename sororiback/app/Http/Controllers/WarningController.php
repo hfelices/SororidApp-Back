@@ -73,16 +73,27 @@ class WarningController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Warning $warning)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'route' => 'exists:routes,id',
-            'reason' => 'in:still_device,incomplete_route,alert_password',
-            'details' => ''
-        ]);
+        $warning = Warning::find($id);
+        if($warning){
+            $request->validate([
+                'route' => 'exists:routes,id',
+                'reason' => 'in:still_device,incomplete_route,alert_password',
+                'details' => ''
+            ]);
+            $warning->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $warning,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding warning'
+            ], 404);
+        }
 
-        $warning->update($request->all());
-        return response()->json(['warning' => $warning], 200);
     }
 
     /**

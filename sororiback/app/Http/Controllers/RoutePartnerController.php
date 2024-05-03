@@ -72,15 +72,25 @@ class RoutePartnerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, RoutePartner $routePartner)
+    public function update(Request $request, string $id)
     {
-        $request->validate([
-            'route' => 'exists:routes,id',
-            'user' => 'exists:users,id'
-        ]);
-
-        $routePartner->update($request->all());
-        return response()->json(['routePartner' => $routePartner], 200);
+        $routePartner = RoutePartner::find($id);
+        if($routePartner){
+            $request->validate([
+                'route' => 'exists:routes,id',
+                'user' => 'exists:users,id'
+            ]);
+            $routePartner->update($request->all());
+            return response()->json([
+                'success' => true,
+                'data' => $routePartner,
+            ], 200);
+        } else{
+            return response()->json([
+                'success'  => false,
+                'message' => 'Error finding routePartner'
+            ], 404);
+        }
     }
 
     /**
