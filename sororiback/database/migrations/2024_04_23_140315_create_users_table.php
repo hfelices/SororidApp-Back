@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->string('alert_password')->nullable();
-            $table->date('birthdate');
-            $table->foreignId('town')->constrained('towns');
-            $table->enum('gender', ['female', 'male', 'nonbinary']);
+            $table->date('birthdate')->nullable();
+            $table->foreignId('town')->constrained('towns')->nullable();
+            $table->enum('gender', ['female', 'male', 'nonbinary'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
