@@ -22,13 +22,13 @@ class DatabaseSeeder extends Seeder
     {
         Region::factory(10)->create();
         $town = Town::factory(10)->create();
-        $user = User::factory(20)->create();
+        $user = User::factory(60)->create();
         $location = Location::factory(10)->create();
         $route = Route::factory(10)->create();
         $routePartner = RoutePartner::factory(10)->create();
         $warning = Warning::factory(10)->create();
        
-        for ($i=0; $i < 20*19; $i++) { 
+        for ($i=0; $i < 30*30; $i++) { 
             $relations = Relation::factory(1)->create();
         }
         

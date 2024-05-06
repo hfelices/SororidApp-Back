@@ -25,6 +25,8 @@ Route::apiResource('towns', TownController::class);
 Route::apiResource('users', UserController::class);
 Route::apiResource('warnings', WarningController::class);
 
+Route::get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
+
 // Route::middleware('auth:sanctum')->apiResource('locations', LocationController::class);
 // Route::middleware('auth:sanctum')->apiResource('regions', RegionController::class);
 // Route::middleware('auth:sanctum')->apiResource('relations', RelationController::class);

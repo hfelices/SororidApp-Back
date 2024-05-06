@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Relation;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RelationController extends Controller
@@ -113,6 +114,96 @@ class RelationController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Localización no encontrada',
+            ], 404);
+        }
+    }
+
+    public function get_user_relations(string $id, string  $type)
+    {
+        $user = User::find($id);
+        if ($user) {
+            if ($type == "all") {
+                $relations = Relation::where('user_1', $id)
+                     ->where('type', '!=', 'blocked')
+                     ->pluck('user_2')
+                     ->toArray();
+                     $users_all = [];
+
+                     foreach ($relations as $user_id) {
+                         $user = User::find($user_id);
+                         if ($user) {
+                             $users_all[] = $user;
+                         }
+                     }
+                return response()->json([
+                    'success' => true,
+                    'data' => $users_all,
+                ], 200);
+
+            } elseif ($type == "blocked") {
+                
+                $relations = Relation::where('user_1', $id)
+                     ->where('type', '=', 'blocked')
+                     ->pluck('user_2')
+                     ->toArray();
+                $users_all = [];
+                
+                foreach ($relations as $user_id) {
+                    $user = User::find($user_id);
+                    if ($user) {
+                        $users_all[] = $user;
+                    }
+                }
+                return response()->json([
+                    'success' => true,
+                    'data' => $users_all,
+                ], 200);
+            } elseif ($type == "extended") {
+                $rel_extended = [];
+                $rel_first = Relation::where('user_1', $id)
+                     ->where('type', '=', 'first')
+                     ->pluck('user_2')
+                     ->toArray();
+                     foreach ($rel_first as $user_2) {
+                        $rel_user_2 = Relation::where('user_1', $user_2)
+                                              ->where('type', '=', 'first')
+                                              ->pluck('user_2')
+                                              ->toArray();
+                        $rel_extended = array_merge($rel_extended, $rel_user_2);
+                    }
+                    $rel_extended = array_unique($rel_extended);
+                    $relations = Relation::where('user_1', $id)->get();
+                    foreach ($relations as $relation) {
+                        $user_2_value = $relation->user_2;
+                        if (($key = array_search($user_2_value, $rel_extended)) !== false) {
+                            unset($rel_extended[$key]);
+                        }
+                    }
+                    if (($key = array_search($id, $rel_extended)) !== false) {
+                        unset($rel_extended[$key]);
+                    }
+                    $users_extended = [];
+
+                    foreach ($rel_extended as $user_id) {
+                        $user = User::find($user_id);
+                        if ($user) {
+                            $users_extended[] = $user;
+                        }
+                    }
+                    return response()->json([
+                        'success' => true,
+                        'data' => $users_extended,
+                    ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Type incorrecto',
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User no encontrado',
             ], 404);
         }
     }
