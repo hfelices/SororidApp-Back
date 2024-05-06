@@ -31,14 +31,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $request->merge(['town' => $request->input('town', 1)]);
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'alert_password' => 'required|min:8',
-            'birthdate' => 'required|date',
-            'town' => 'required|exists:towns,id',
-            'gender' => 'required|in:male,female,other'
+            'alert_password' => 'nullable|min:8',
+            'birthdate' => 'nullable|date',
+            'town' => 'nullable|exists:towns,id',
+            'gender' => 'nullable|in:male,female,other'
         ]);
 
         $user = User::create($request->all());

@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('password');
             $table->string('alert_password')->nullable();
             $table->date('birthdate')->nullable();
-            $table->foreignId('town')->constrained('towns')->nullable();
+            $table->foreignId('town')->constrained('towns');
+            $table->foreign('town')->references('id')->on('towns')->default(1);
             $table->enum('gender', ['female', 'male', 'nonbinary'])->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
