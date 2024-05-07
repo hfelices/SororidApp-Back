@@ -10,6 +10,7 @@ use App\Http\Controllers\RoutePartnerController;
 use App\Http\Controllers\TownController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarningController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -23,6 +24,7 @@ Route::apiResource('routes', RouteController::class);
 Route::apiResource('routepartners', RoutePartnerController::class);
 Route::apiResource('towns', TownController::class);
 Route::apiResource('users', UserController::class);
+Route::apiResource('profiles', ProfileController::class);
 Route::apiResource('warnings', WarningController::class);
 
 Route::get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
