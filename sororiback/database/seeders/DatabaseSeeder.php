@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use App\Models\Profile;
 use App\Models\Location;
 use App\Models\Town;
 use App\Models\Region;
@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
     {
         Region::factory(10)->create();
         $town = Town::factory(10)->create();
-        $user = User::factory(60)->create();
+        $profile = Profile::factory(60)->create();
         $location = Location::factory(10)->create();
         $route = Route::factory(10)->create();
         $routePartner = RoutePartner::factory(10)->create();

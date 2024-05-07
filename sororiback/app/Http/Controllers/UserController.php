@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -31,22 +32,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->merge(['town' => $request->input('town', 1)]);
+        $request->merge(['made_profile' => $request->input('made_profile', 'false')]);
         $request->validate([
-            'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'alert_password' => 'nullable|min:8',
-            'birthdate' => 'nullable|date',
-            'town' => 'nullable|exists:towns,id',
-            'gender' => 'nullable|in:male,female,other'
         ]);
 
         $user = User::create($request->all());
         if ($user){
+            $profile = Profile::create([
+                'id_user' => $user->id,
+                'town' => 1,
+            ]);
             return response()->json([
                 'success' =>true,
-                'data' => $user
+                'data' => ['user' =>$user, 'profile' => $profile]
             ], 201);
         }else{
             return response()->json([
@@ -83,13 +83,8 @@ class UserController extends Controller
         $user = User::find($id);
         if($user){
             $request->validate([
-                'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$user->id,
                 'password' => 'nullable|min:8',
-                'alert_password' => 'required|min:8',
-                'birthdate' => 'required|date',
-                'town' => 'required|exists:towns,id',
-                'gender' => 'required|in:male,female,other'
             ]);
             $user->update($request->all());
             return response()->json([
@@ -110,12 +105,14 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         $user = User::find($id);
+        $profile = Profile::where('id_user', $id)->first();
 
         if ($user) {
+            $profile->delete();
             $user->delete();
             return response()->json([
                 'success' => true,
-                'data' => $user,
+                'data' => ['user' => $user, 'profile' => $profile],
             ], 200);
         } else {
             return response()->json([

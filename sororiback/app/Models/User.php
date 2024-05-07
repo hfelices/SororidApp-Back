@@ -16,13 +16,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
-        'alert_password',
-        'birthdate',
-        'town',
-        'gender',
+        'made_profile',
     ];
 
     /**
@@ -55,15 +51,6 @@ class User extends Authenticatable
         return ucfirst($value);
     }
 
-    /**
-     * Get the town relation.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function town()
-    {
-        return $this->belongsTo(Region::class, 'town');
-    }
 
     /**
      * Get the locations relation.

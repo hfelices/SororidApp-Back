@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Relation;
 use App\Models\User;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 
 class RelationController extends Controller
@@ -130,9 +131,10 @@ class RelationController extends Controller
                      $users_all = [];
 
                      foreach ($relations as $user_id) {
-                         $user = User::find($user_id);
-                         if ($user) {
-                             $users_all[] = $user;
+                        $profile = Profile::where('id_user', $user_id)->first();
+
+                         if ($profile) {
+                             $users_all[] = $profile;
                          }
                      }
                 return response()->json([
@@ -149,9 +151,9 @@ class RelationController extends Controller
                 $users_all = [];
                 
                 foreach ($relations as $user_id) {
-                    $user = User::find($user_id);
-                    if ($user) {
-                        $users_all[] = $user;
+                    $profile = Profile::where('id_user', $user_id)->first();
+                    if ($profile) {
+                        $users_all[] = $profile;
                     }
                 }
                 return response()->json([
@@ -185,9 +187,9 @@ class RelationController extends Controller
                     $users_extended = [];
 
                     foreach ($rel_extended as $user_id) {
-                        $user = User::find($user_id);
-                        if ($user) {
-                            $users_extended[] = $user;
+                        $profile = Profile::where('id_user', $user_id)->first();
+                        if ($profile) {
+                            $users_extended[] = $profile;
                         }
                     }
                     return response()->json([
