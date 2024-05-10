@@ -76,11 +76,15 @@ class UserController extends Controller
         $profile = Profile::where([
             ["id_user", "=", $user->id]
         ])->firstOrFail();
+        $town = Town::where([
+            ['id', "=", $profile->town]
+        ])->firstOrFail();
         if ($user) {
             return response()->json([
                 'success' => true,
-                'data' => $user,
-                'profile' => $profile
+                'user' => $user,
+                'profile' => $profile,
+                'town'=>$town
             ], 200);
         } else {
             return response()->json([
