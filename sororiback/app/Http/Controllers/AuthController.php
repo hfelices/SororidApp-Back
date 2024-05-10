@@ -13,58 +13,81 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|confirmed',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8',
         ]);
-
-        $user = new User([
+        $user = User::create([
             'email' => $request->email,
+            'made_profile' => 'false',
             'password' => Hash::make($request->password),
         ]);
-
-        $user->save();
-
-        return response()->json(['message' => 'User registered successfully'], 201);
+        if ($user){
+            $profile = Profile::create([
+                'id_user' => $user->id,
+                'town' => 1,
+            ]);
+            return response()->json([
+                'success' =>true,
+                'data' => ['user' =>$user, 'profile' => $profile]
+            ], 201);
+        }else{
+            return response()->json([
+                'success' =>false,
+                'message' =>'Error al crear el usuario',
+            ],500);
+        }
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->validate([
-            'email'     => 'required|email',
-            'password'  => 'required',
-        ]);
-        if (Auth::attempt($credentials)) {
-            // Get user
-            $user = User::where([
-                ["email", "=", $credentials["email"]]
-            ])->firstOrFail();
-            // Revoke all old tokens
-            $user->tokens()->delete();
-            // Generate new token
-            $token = $user->createToken("authToken")->plainTextToken;
-            // Token response
-            $profile = Profile::where([
-                ["id_user", "=", $user->id]
-            ])->firstOrFail();
-            return response()->json([
-                "success"   => true,
-                "authToken" => $token,
-                "tokenType" => "Bearer",
-                "user" => $user,
-                "profile" => $profile
-            ], 200);
-        } else {
+        try {
+            $credentials = $request->validate([
+                'email'     => 'required|email',
+                'password'  => 'required',
+            ]);
+    
+            if (Auth::attempt($credentials)) {
+                $user = User::where("email", $credentials["email"])->firstOrFail();
+    
+                $user->tokens()->delete();
+                $token = $user->createToken("authToken")->plainTextToken;
+    
+                $profile = Profile::where("id_user", $user->id)->firstOrFail();
+    
+                return response()->json([
+                    "success"   => true,
+                    "authToken" => $token,
+                    "tokenType" => "Bearer",
+                    "user"      => $user,
+                    "profile"   => $profile
+                ], 200);
+            } else {
+                return response()->json([
+                    "success" => false,
+                    "message" => "Invalid login credentials"
+                ], 401);
+            }
+        } catch (\Throwable $th) {
             return response()->json([
                 "success" => false,
-                "message" => "Invalid login credentials"
+                "message" => "Invalid login " .$th
             ], 401);
         }
     }
 
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
-
-        return response()->json(['message' => 'Logged out successfully']);
+        try {
+            $request->user()->tokens()->delete();
+            return response()->json([
+                "success"   => true,
+                'message' => 'Logged out successfully'
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "success" => false,
+                "message" => "Logout error:" . $th
+            ], 401);
+        }
     }
 }

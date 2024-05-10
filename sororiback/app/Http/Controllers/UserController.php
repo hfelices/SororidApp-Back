@@ -16,7 +16,11 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $usersAll = User::all();
+        foreach ($usersAll as $user) {
+            $profile = Profile::where('id_user', $user->id)->first();
+            $users[] = ['user' => $user, 'profile' => $profile];
+        }
         if ($users) {
             return response()->json([
                 'success' =>true,
@@ -35,14 +39,13 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->merge(['made_profile' => $request->input('made_profile', 'false')]);
         $request->validate([
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
         ]);
         $user = User::create([
             'email' => $request->email,
-            'made_profile' => $request->made_profile,
+            'made_profile' => 'false',
             'password' => Hash::make($request->password),
         ]);
         if ($user){
@@ -50,8 +53,6 @@ class UserController extends Controller
                 'id_user' => $user->id,
                 'town' => 1,
             ]);
-            event(new Registered($user));
-            Auth::login($user);
             return response()->json([
                 'success' =>true,
                 'data' => ['user' =>$user, 'profile' => $profile]

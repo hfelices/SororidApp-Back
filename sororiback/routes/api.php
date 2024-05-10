@@ -17,23 +17,15 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 
-Route::apiResource('locations', LocationController::class);
-Route::apiResource('regions', RegionController::class);
-Route::apiResource('relations', RelationController::class);
-Route::apiResource('routes', RouteController::class);
-Route::apiResource('routepartners', RoutePartnerController::class);
-Route::apiResource('towns', TownController::class);
+Route::middleware('auth:sanctum')->apiResource('locations', LocationController::class);
+Route::middleware('auth:sanctum')->apiResource('regions', RegionController::class);
+Route::middleware('auth:sanctum')->apiResource('relations', RelationController::class);
+Route::middleware('auth:sanctum')->apiResource('routes', RouteController::class);
+Route::middleware('auth:sanctum')->apiResource('routepartners', RoutePartnerController::class);
+Route::middleware('auth:sanctum')->apiResource('towns', TownController::class);
 Route::apiResource('users', UserController::class);
-Route::apiResource('profiles', ProfileController::class);
-Route::apiResource('warnings', WarningController::class);
+Route::middleware('auth:sanctum')->apiResource('profiles', ProfileController::class);
+Route::middleware('auth:sanctum')->apiResource('warnings', WarningController::class);
 
-Route::get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
+Route::middleware('auth:sanctum')->get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
 
-// Route::middleware('auth:sanctum')->apiResource('locations', LocationController::class);
-// Route::middleware('auth:sanctum')->apiResource('regions', RegionController::class);
-// Route::middleware('auth:sanctum')->apiResource('relations', RelationController::class);
-// Route::middleware('auth:sanctum')->apiResource('routes', RouteController::class);
-// Route::middleware('auth:sanctum')->apiResource('routepartners', RoutePartnerController::class);
-// Route::middleware('auth:sanctum')->apiResource('towns', TownController::class);
-// Route::middleware('auth:sanctum')->apiResource('users', UserController::class);
-// Route::middleware('auth:sanctum')->apiResource('warnings', WarningController::class);
