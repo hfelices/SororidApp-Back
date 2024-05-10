@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -37,13 +40,18 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
         ]);
-
-        $user = User::create($request->all());
+        $user = User::create([
+            'email' => $request->email,
+            'made_profile' => $request->made_profile,
+            'password' => Hash::make($request->password),
+        ]);
         if ($user){
             $profile = Profile::create([
                 'id_user' => $user->id,
                 'town' => 1,
             ]);
+            event(new Registered($user));
+            Auth::login($user);
             return response()->json([
                 'success' =>true,
                 'data' => ['user' =>$user, 'profile' => $profile]
@@ -62,10 +70,14 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
+        $profile = Profile::where([
+            ["id_user", "=", $user->id]
+        ])->firstOrFail();
         if ($user) {
             return response()->json([
                 'success' => true,
                 'data' => $user,
+                'profile' => $profile
             ], 200);
         } else {
             return response()->json([
