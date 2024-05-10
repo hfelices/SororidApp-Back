@@ -23,7 +23,7 @@ Route::middleware('auth:sanctum')->apiResource('relations', RelationController::
 Route::middleware('auth:sanctum')->apiResource('routes', RouteController::class);
 Route::middleware('auth:sanctum')->apiResource('routepartners', RoutePartnerController::class);
 Route::middleware('auth:sanctum')->apiResource('towns', TownController::class);
-Route::apiResource('users', UserController::class);
+Route::middleware('auth:sanctum')->apiResource('users', UserController::class);
 Route::middleware('auth:sanctum')->apiResource('profiles', ProfileController::class);
 Route::middleware('auth:sanctum')->apiResource('warnings', WarningController::class);
 

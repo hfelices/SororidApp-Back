@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Town;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,8 @@ class UserController extends Controller
         $usersAll = User::all();
         foreach ($usersAll as $user) {
             $profile = Profile::where('id_user', $user->id)->first();
-            $users[] = ['user' => $user, 'profile' => $profile];
+            $town = Town::find($profile->town);
+            $users[] = ['user' => $user, 'profile' => $profile, 'town' => $town];
         }
         if ($users) {
             return response()->json([
