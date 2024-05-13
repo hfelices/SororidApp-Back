@@ -54,12 +54,17 @@ class AuthController extends Controller
     
                 $profile = Profile::where("id_user", $user->id)->firstOrFail();
     
+                $town = Town::where([
+                    ['id', "=", $profile->town]
+                ])->firstOrFail();    
+                
                 return response()->json([
                     "success"   => true,
                     "authToken" => $token,
                     "tokenType" => "Bearer",
                     "user"      => $user,
-                    "profile"   => $profile
+                    "profile"   => $profile,
+                    "town" => $town,
                 ], 200);
             } else {
                 return response()->json([

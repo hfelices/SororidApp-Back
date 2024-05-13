@@ -106,9 +106,17 @@ class UserController extends Controller
                 'password' => 'nullable|min:8',
             ]);
             $user->update($request->all());
+            $profile = Profile::where([
+                ["id_user", "=", $user->id]
+            ])->firstOrFail();
+            $town = Town::where([
+                ['id', "=", $profile->town]
+            ])->firstOrFail();    
             return response()->json([
                 'success' => true,
-                'data' => $user,
+                'user' => $user,
+                'profile' => $profile,
+                'town'=>$town
             ], 200);
         } else{
             return response()->json([
