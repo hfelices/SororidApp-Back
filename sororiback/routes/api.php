@@ -11,10 +11,12 @@ use App\Http\Controllers\TownController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WarningController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AuthController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
 
 
 Route::middleware('auth:sanctum')->apiResource('locations', LocationController::class);
@@ -28,4 +30,4 @@ Route::middleware('auth:sanctum')->apiResource('profiles', ProfileController::cl
 Route::middleware('auth:sanctum')->apiResource('warnings', WarningController::class);
 
 Route::middleware('auth:sanctum')->get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
-
+Route::middleware('auth:sanctum')->post('/profiles/{id}/image', [ProfileController::class, 'updateProfileImage'])->name('profiles.image');

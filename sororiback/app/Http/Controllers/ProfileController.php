@@ -73,4 +73,28 @@ class ProfileController extends Controller
             ], 404);
         }
     }
+    public function updateProfileImage(Request $request, string $id)
+{
+    $profile = Profile::where('id_user', $id)->first();
+    if ($profile) {
+        $request->validate([
+            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192', 
+        ]);
+        $image = $request->file('profile_image');
+        $imageName = time().'.'.$image->extension();
+        $image->move(public_path('profile-images/'.$id."/"), $imageName);
+        $profile->update(['profile_img_path' => "/profile-images/".$imageName]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Imagen de perfil actualizada correctamente',
+            'data' => $profile,
+        ], 200);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Perfil no encontrado',
+        ], 404);
+    }
+}
 }
