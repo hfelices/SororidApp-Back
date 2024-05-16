@@ -29,6 +29,6 @@ Route::middleware('auth:sanctum')->apiResource('users', UserController::class);
 Route::middleware('auth:sanctum')->apiResource('profiles', ProfileController::class);
 Route::middleware('auth:sanctum')->apiResource('warnings', WarningController::class);
 
-Route::middleware('auth:sanctum')->get('/relations/{user}/explore', [RelationController::class, 'explore'])->name('relations.explore');
+Route::get('/relations/{user}/explore', [RelationController::class, 'explore'])->name('relations.explore');
 Route::middleware('auth:sanctum')->get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
 Route::middleware('auth:sanctum')->post('/profiles/{id}/image', [ProfileController::class, 'updateProfileImage'])->name('profiles.image');

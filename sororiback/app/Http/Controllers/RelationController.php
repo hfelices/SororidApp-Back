@@ -222,7 +222,7 @@ class RelationController extends Controller
             $users = User::where('id', '!=', $id)
                 ->whereNotIn('id', array_keys($relatedUserIds))
                 ->with('profile')
-                ->get();
+                ->paginate(10);
 
             return response()->json([
                 'success' => true,
