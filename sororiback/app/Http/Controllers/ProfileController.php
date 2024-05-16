@@ -83,7 +83,7 @@ class ProfileController extends Controller
         $image = $request->file('profile_image');
         $imageName = time().'.'.$image->extension();
         $image->move(public_path('profile-images/'.$id."/"), $imageName);
-        $profile->update(['profile_img_path' => "/profile-images/".$id.$imageName]);
+        $profile->update(['profile_img_path' => "/profile-images/".$id."/".$imageName]);
 
         return response()->json([
             'success' => true,
