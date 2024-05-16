@@ -209,4 +209,30 @@ class RelationController extends Controller
             ], 404);
         }
     }
+    public function explore(Request $request, string $id){
+        
+        $user = User::find($id);
+        if ($user) {
+
+            $relatedUserIds = Relation::where('user_1', $id)
+                ->orWhere('user_2', $id)
+                ->pluck('user_1', 'user_2')
+                ->all();
+
+            $users = User::where('id', '!=', $id)
+                ->whereNotIn('id', array_keys($relatedUserIds))
+                ->with('profile')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'users' => $users,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User no encontrado',
+            ], 404);
+        }
+    }
 }

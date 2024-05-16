@@ -71,4 +71,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Relation::class, 'user_1');
     }
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'id_user');
+    }
 }
