@@ -209,21 +209,29 @@ class RelationController extends Controller
             ], 404);
         }
     }
-    public function explore(Request $request, string $id){
-        
+    public function explore(Request $request, string $id)
+    {
         $user = User::find($id);
         if ($user) {
-
             $relatedUserIds = Relation::where('user_1', $id)
                 ->orWhere('user_2', $id)
                 ->pluck('user_1', 'user_2')
                 ->all();
-
-            $users = User::where('id', '!=', $id)
+    
+            $query = User::where('id', '!=', $id)
                 ->whereNotIn('id', array_keys($relatedUserIds))
-                ->with(['profile', 'profile.town'])
-                ->paginate(10);
-
+                ->with(['profile', 'profile.town']);
+    
+            if ($request->has('search')) {
+                $searchTerm = $request->input('search');
+                $query->whereHas('profile', function($q) use ($searchTerm) {
+                    $q->where('name', 'like', "%$searchTerm%")
+                      ->orWhere('description', 'like', "%$searchTerm%");
+                });
+            }
+    
+            $users = $query->paginate(10);
+    
             return response()->json([
                 'success' => true,
                 'users' => $users,
