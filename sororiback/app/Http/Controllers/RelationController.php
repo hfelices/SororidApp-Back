@@ -125,17 +125,22 @@ class RelationController extends Controller
         if ($user) {
             if ($type == "all") {
                 $relations = Relation::where('user_1', $id)
-                     ->where('type', '!=', 'blocked')
                      ->pluck('user_2')
                      ->toArray();
+                $types = Relation::where('user_1', $id)
+                     ->pluck('type')
+                     ->toArray();
                      $users_all = [];
-
+                     $i = 0;
                      foreach ($relations as $user_id) {
                         $profile = Profile::where('id_user', $user_id)->first();
 
-                         if ($profile) {
-                             $users_all[] = $profile;
-                         }
+                        if ($profile) {
+                            $profile->relation_type = $types[$i];
+                            $users_all[] = $profile;
+                        }
+                        $i++;
+                    
                      }
                 return response()->json([
                     'success' => true,
@@ -193,7 +198,7 @@ class RelationController extends Controller
                         }
                     }
                     return response()->json([
-                        'success' => true,
+                        'success' => true,-
                         'data' => $users_extended,
                     ], 200);
             } else {

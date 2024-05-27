@@ -81,7 +81,7 @@ class ProfileController extends Controller
             'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192', 
         ]);
         $image = $request->file('profile_image');
-        $imageName = time().'.'.$image->extension();
+        $imageName = 'image'.'.'.$image->extension();
         $image->move(public_path('profile-images/'.$id."/"), $imageName);
         $profile->update(['profile_img_path' => "/profile-images/".$id."/".$imageName]);
 
