@@ -194,11 +194,12 @@ class RelationController extends Controller
                     foreach ($rel_extended as $user_id) {
                         $profile = Profile::where('id_user', $user_id)->first();
                         if ($profile) {
+                            $profile->relation_type = "extended";
                             $users_extended[] = $profile;
                         }
                     }
                     return response()->json([
-                        'success' => true,-
+                        'success' => true,
                         'data' => $users_extended,
                     ], 200);
             } else {
