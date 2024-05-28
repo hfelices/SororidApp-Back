@@ -21,7 +21,7 @@ class RouteController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar las rutas',
+                'message' =>'Error listing routes',
             ],500);
         }
     }
@@ -48,7 +48,7 @@ class RouteController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear la ruta',
+                'message' =>'Error creating route',
             ],500);
         }
     }
@@ -67,7 +67,7 @@ class RouteController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la relación',
+                'message' => 'Error showing route',
             ], 404);
         }
     }
@@ -115,7 +115,7 @@ class RouteController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Ruta no encontrada',
+                'message' => 'Route not found',
             ], 404);
         }
     }

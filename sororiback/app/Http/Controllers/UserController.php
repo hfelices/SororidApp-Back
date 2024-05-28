@@ -31,7 +31,7 @@ class UserController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar los usuarios',
+                'message' =>'Error listing users',
             ],500);
         }
     }
@@ -62,7 +62,7 @@ class UserController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear el usuario',
+                'message' =>'Error creating user',
             ],500);
         }
     }
@@ -89,7 +89,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar el user',
+                'message' => 'Error showing user',
             ], 404);
         }
     }
@@ -144,7 +144,7 @@ class UserController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'User no encontrado',
+                'message' => 'User not found',
             ], 404);
         }
     }

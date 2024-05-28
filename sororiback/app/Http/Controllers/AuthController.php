@@ -34,7 +34,7 @@ class AuthController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear el usuario',
+                'message' =>'Error creating user',
             ],500);
         }
     }

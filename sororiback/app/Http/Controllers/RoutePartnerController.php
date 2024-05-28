@@ -21,7 +21,7 @@ class RoutePartnerController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar los compañeros de ruta',
+                'message' =>'Error listing RoutePartners',
             ],500);
         }
     }
@@ -45,7 +45,7 @@ class RoutePartnerController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear el compañero de ruta',
+                'message' =>'Error creating RoutePartner',
             ],500);
         }
     }
@@ -64,7 +64,7 @@ class RoutePartnerController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la relación',
+                'message' => "Error showing RoutePartner, oh no, you are going alone aren't you",
             ], 404);
         }
     }
@@ -109,7 +109,7 @@ class RoutePartnerController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'routePartner no encontrado',
+                'message' => 'routePartner not found',
             ], 404);
         }
     }

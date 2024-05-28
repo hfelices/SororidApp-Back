@@ -21,7 +21,7 @@ class TownController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar las ciudades',
+                'message' =>'Error listing town',
             ],500);
         }
     }
@@ -45,7 +45,7 @@ class TownController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear la ciudad',
+                'message' =>'Error creating town',
             ],500);
         }
     }
@@ -64,7 +64,7 @@ class TownController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la ciudad',
+                'message' => 'Error showing town',
             ], 404);
         }
     }
@@ -109,7 +109,7 @@ class TownController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Ciudad no encontrada',
+                'message' => 'Town not found',
             ], 404);
         }
     }

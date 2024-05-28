@@ -22,7 +22,7 @@ class ProfileController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al listar los perfiles',
+                'message' => 'Error listing Profiles',
             ], 500);
         }
     }
@@ -41,7 +41,7 @@ class ProfileController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar el perfil',
+                'message' => 'Error showing profile',
             ], 404);
         }
     }
@@ -69,7 +69,7 @@ class ProfileController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Perfil no encontrado',
+                'message' => 'Profile not found :(',
             ], 404);
         }
     }
@@ -78,7 +78,7 @@ class ProfileController extends Controller
     $profile = Profile::where('id_user', $id)->first();
     if ($profile) {
         $request->validate([
-            'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192', 
+            'profile_image' => 'required|image|mimes:raw,webp,tiff,bmp,heif,heic,dng,jpeg,png,jpg,gif|max:10240', 
         ]);
         if ($profile->profile_img_path && file_exists(public_path($profile->profile_img_path))) {
             unlink(public_path($profile->profile_img_path));
@@ -90,13 +90,13 @@ class ProfileController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Imagen de perfil actualizada correctamente',
+            'message' => 'Profile image updated succesfully :)',
             'data' => $profile,
         ], 200);
     } else {
         return response()->json([
             'success' => false,
-            'message' => 'Perfil no encontrado',
+            'message' => 'Profile not found',
         ], 404);
     }
 }

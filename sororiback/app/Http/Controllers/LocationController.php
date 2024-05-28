@@ -21,7 +21,7 @@ class LocationController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar las localizaciones',
+                'message' =>'Error listing Locations',
             ],500);
         }
     }
@@ -46,7 +46,7 @@ class LocationController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear localización',
+                'message' =>'Errior at creating location',
             ],500);
         }
     }
@@ -65,7 +65,7 @@ class LocationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la localización',
+                'message' => 'Error showing Location',
             ], 404);
         }
     }
@@ -111,7 +111,7 @@ class LocationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Localización no encontrada',
+                'message' => 'Location not found',
             ], 404);
         }
     }

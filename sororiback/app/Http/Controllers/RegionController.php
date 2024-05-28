@@ -22,7 +22,7 @@ class RegionController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar las regiones',
+                'message' =>'Error listing regions',
             ],500);
         }
     }
@@ -45,7 +45,7 @@ class RegionController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear región',
+                'message' =>'Error creating region',
             ],500);
         }
     }
@@ -64,7 +64,7 @@ class RegionController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la region',
+                'message' => 'Error showing region :_(',
             ], 404);
         }
     }
@@ -110,7 +110,7 @@ class RegionController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Región no encontrada',
+                'message' => 'Region not found',
             ], 404);
         }
     }

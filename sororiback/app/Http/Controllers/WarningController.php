@@ -21,7 +21,7 @@ class WarningController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar los warnings',
+                'message' =>'Error listing warnings',
             ],500);
         }
     }
@@ -46,7 +46,7 @@ class WarningController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear el warning',
+                'message' =>'Error creting warning',
             ],500);
         }
     }
@@ -65,7 +65,7 @@ class WarningController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar el warning',
+                'message' => 'Error 404 warning not found (jk, it just didnt found in the show endpoint)',
             ], 404);
         }
     }
@@ -112,7 +112,7 @@ class WarningController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Warning no encontrado',
+                'message' => 'Warning not found, sad',
             ], 404);
         }
     }

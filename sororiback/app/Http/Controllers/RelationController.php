@@ -23,7 +23,7 @@ class RelationController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al listar las relaciones',
+                'message' =>'Error listing relations',
             ],500);
         }
     }
@@ -49,7 +49,7 @@ class RelationController extends Controller
         }else{
             return response()->json([
                 'success' =>false,
-                'message' =>'Error al crear la relación',
+                'message' =>'Error creating relation',
             ],500);
         }
     }
@@ -68,7 +68,7 @@ class RelationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Error al mostrar la relación',
+                'message' => 'Error showing relation',
             ], 404);
         }
     }
@@ -114,7 +114,7 @@ class RelationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'Localización no encontrada',
+                'message' => 'Relation not found, how sadly',
             ], 404);
         }
     }
@@ -205,13 +205,13 @@ class RelationController extends Controller
             } else {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Type incorrecto',
+                    'message' => 'Incorrect Type',
                 ], 404);
             }
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'User no encontrado',
+                'message' => 'User not found',
             ], 404);
         }
     }
@@ -245,7 +245,7 @@ class RelationController extends Controller
         } else {
             return response()->json([
                 'success' => false,
-                'message' => 'User no encontrado',
+                'message' => 'User not found',
             ], 404);
         }
     }
