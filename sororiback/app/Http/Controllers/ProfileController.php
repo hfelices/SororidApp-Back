@@ -80,8 +80,11 @@ class ProfileController extends Controller
         $request->validate([
             'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:8192', 
         ]);
+        if ($profile->profile_img_path && file_exists(public_path($profile->profile_img_path))) {
+            unlink(public_path($profile->profile_img_path));
+        }
         $image = $request->file('profile_image');
-        $imageName = 'image'.'.'.$image->extension();
+        $imageName = time().'.'.$image->extension();
         $image->move(public_path('profile-images/'.$id."/"), $imageName);
         $profile->update(['profile_img_path' => "/profile-images/".$id."/".$imageName]);
 
