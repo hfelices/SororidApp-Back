@@ -249,4 +249,32 @@ class RelationController extends Controller
             ], 404);
         }
     }
+    public function pending(string $id)
+    {
+        $relations = Relation::where('user_2', $id)
+            ->where('status', 'pending')
+            ->get();
+
+        if ($relations->isNotEmpty()) {
+            $notifications = [];
+            foreach ($relations as $relation) {
+                $profile = Profile::where('id_user', $relation->user_1)->first();
+                if ($profile) {
+                    $notifications[] = [
+                        'relation' => $relation,
+                        'profile' => $profile,
+                    ];
+                }
+            }
+            return response()->json([
+                'success' => true,
+                'data' => $notifications,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'No pending notifications found',
+            ], 404);
+        }
+    }
 }
