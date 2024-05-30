@@ -131,7 +131,7 @@ class RelationController extends Controller
                      ->pluck('type')
                      ->toArray();
                 $ids = Relation::where('user_1', $id)
-                ->pluck('type')
+                ->pluck('id')
                 ->toArray();
                      $users_all = [];
                      $i = 0;
