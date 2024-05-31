@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Profile;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 
@@ -60,7 +61,10 @@ class ProfileController extends Controller
                 'town' => 'required',
                 'gender' => 'required|in:female,male,nonbinary',
             ]);
-
+            $user = User::find($id);
+            if ($user) {
+                $user->update(['made_profile' => true]);
+            }
             $profile->update($request->all());
             return response()->json([
                 'success' => true,

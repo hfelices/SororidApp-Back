@@ -47,7 +47,7 @@ class UserController extends Controller
         ]);
         $user = User::create([
             'email' => $request->email,
-            'made_profile' => 'false',
+            'made_profile' => false,
             'password' => Hash::make($request->password),
         ]);
         if ($user){
