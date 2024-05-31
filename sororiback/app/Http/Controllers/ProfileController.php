@@ -68,7 +68,8 @@ class ProfileController extends Controller
             $profile->update($request->all());
             return response()->json([
                 'success' => true,
-                'data' => $profile,
+                'profile' => $profile,
+                'user' => $user
             ], 200);
         } else {
             return response()->json([
