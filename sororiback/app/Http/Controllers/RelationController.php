@@ -130,6 +130,9 @@ class RelationController extends Controller
                 $types = Relation::where('user_1', $id)
                      ->pluck('type')
                      ->toArray();
+                $status = Relation::where('user_1', $id)
+                     ->pluck('status')
+                     ->toArray();
                 $ids = Relation::where('user_1', $id)
                 ->pluck('id')
                 ->toArray();
@@ -141,6 +144,7 @@ class RelationController extends Controller
                         if ($profile) {
                             $profile->relation_type = $types[$i];
                             $profile->relation_id = $ids[$i];
+                            $profile->status = $status[$i];
                             $users_all[] = $profile;
                         }
                         $i++;

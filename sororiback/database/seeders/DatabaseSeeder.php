@@ -20,8 +20,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Region::factory(10)->create();
-        $town = Town::factory(10)->create();
+        $this->call(RegionSeeder::class);
+        $this->call(TownSeeder::class);
         $profile = Profile::factory(60)->create();
         $location = Location::factory(10)->create();
         $route = Route::factory(10)->create();
