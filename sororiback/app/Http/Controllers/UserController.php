@@ -45,10 +45,17 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
         ]);
+        if (!$request->has('made_profile')) {
+            $request->merge(['made_profile' => 'false']);
+        }
+        if (!$request->has('role')) {
+            $request->merge(['role' => 'common']);
+        }
         $user = User::create([
             'email' => $request->email,
-            'made_profile' => false,
+            'made_profile' => $request->made_profile,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
         if ($user){
             $profile = Profile::create([

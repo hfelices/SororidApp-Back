@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(RegionSeeder::class);
         $this->call(TownSeeder::class);
+        $this->call(UserSeeder::class);
+        $this->call(ProfileSeeder::class);
         $profile = Profile::factory(60)->create();
         $location = Location::factory(10)->create();
         $route = Route::factory(10)->create();

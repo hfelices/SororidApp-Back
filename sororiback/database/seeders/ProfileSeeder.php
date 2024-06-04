@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Profile;
 
 class ProfileSeeder extends Seeder
 {
@@ -12,6 +13,13 @@ class ProfileSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Profile::create([
+            'name' => 'Admin',
+            'id_user' => 1,
+            'alert_password' => 'admin12345',
+            'birthdate' => '2004-03-13',
+            'town' => 2,
+            'gender' => 'male'
+        ]);
     }
 }
