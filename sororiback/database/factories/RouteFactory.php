@@ -21,6 +21,8 @@ class RouteFactory extends Factory
             'time_start' => $this->faker->dateTime(),
             'time_end' => $this->faker->dateTime(),
             'user' => User::all()->random()->id,
+            'share' => $this->faker->randomElement(['first', 'second', 'extended']),
+            'status' => $this->faker->randomElement(['active', 'ended', 'alarm']),
         ];
     }
 }

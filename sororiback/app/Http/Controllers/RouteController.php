@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Warning;
+use App\Models\User;
+use App\Models\Profile;
 
 class RouteController extends Controller
 {
@@ -34,16 +38,23 @@ class RouteController extends Controller
         $request->validate([
             'coordinates_start' => 'required',
             'coordinates_end' => 'required',
-            'time_start' => 'required',
             'time_end' => 'required',
-            'user' => 'required|exists:users,id'
+            'user' => 'required|exists:users,id',
+            'share' => 'required',
         ]);
-
-        $route = Route::create($request->all());
+        $route = Route::create([
+            'coordinates_start' => $request->coordinates_start,
+            'coordinates_end' => $request->coordinates_end,
+            'time_start' => new Date,
+            'time_end' => $request->time_end,
+            'user' => $request->user,
+            'share' => $request->share,
+            'status' => "active",
+        ]);
         if ($route){
             return response()->json([
                 'success' =>true,
-                'data' => $route
+                'route' => $route
             ], 201);
         }else{
             return response()->json([
@@ -79,13 +90,6 @@ class RouteController extends Controller
     {
         $route = Route::find($id);
         if($route){
-            $request->validate([
-                'coordinates_start' => 'required',
-                'coordinates_end' => 'required',
-                'time_start' => 'required',
-                'time_end' => 'required',
-                'user' => 'required'
-            ]);
             $route->update($request->all());
             return response()->json([
                 'success' => true,
@@ -119,4 +123,35 @@ class RouteController extends Controller
             ], 404);
         }
     }
+    public function verifyPassword(Request $request, string $id)
+    {
+        $route = Route::find($id);
+    
+        if (!$route) {
+            return response()->json(['error' => 'Route not found'], 404);
+        }
+        $request->validate([
+            'password' => 'required',
+        ]);
+        $user = User::find($route->user);
+        $profile = Profile::where('user_id', $user->id)->first();
+        if (Hash::check($request->password, $profile->alert_password)) {
+            $route->status = 'alarm';
+            $route->save();
+            $warning = new Warning();
+            $warning->route = $id;
+            $warning->reason = 'alert_password';
+            $warning->details = 'Ha introducido la contraseña de emergencia';
+            $warning->save();
+            return response()->json(['message' => 'Password verified and actions taken accordingly'], 200);
+        } else if (Hash::check($request->password, $user->password)){
+            $route->status = 'ended';
+            $route->save();
+            return response()->json(['message' => 'Password verified and actions taken accordingly'], 200);
+        } else {
+            return response()->json(['error' => 'Invalid password'], 401);
+        }
+    }
+    
 }
+

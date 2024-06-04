@@ -14,15 +14,15 @@ class TownSeeder extends Seeder
     public function run(): void
     {
         Town::create([
-            'name' => 'San Pedro de Ribas',
+            'name' => 'San Pere de Ribes',
             'region' => 1
         ]);
         Town::create([
-            'name' => 'Cubellas',
+            'name' => 'Cubelles',
             'region' => 1
         ]);
         Town::create([
-            'name' => 'Villanueva',
+            'name' => 'Vilanova',
             'region' => 1
         ]);
         Town::create([

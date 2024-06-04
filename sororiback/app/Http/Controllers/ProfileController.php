@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 
 class ProfileController extends Controller
@@ -51,33 +52,39 @@ class ProfileController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        $profile = Profile::where('id_user', $id)->first();
-        if ($profile) {
-            $request->validate([
-                'name' => 'required',
-                'alert_password' => 'required',
-                'birthdate' => 'required|date',
-                'town' => 'required',
-                'gender' => 'required|in:female,male,nonbinary',
-            ]);
-            $user = User::find($id);
-            if ($user) {
-                $user->update(['made_profile' => true]);
-            }
-            $profile->update($request->all());
-            return response()->json([
-                'success' => true,
-                'profile' => $profile,
-                'user' => $user
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Profile not found :(',
-            ], 404);
+{
+    $profile = Profile::where('id_user', $id)->first();
+    if ($profile) {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'alert_password' => 'required',
+            'birthdate' => 'required|date',
+            'town' => 'required',
+            'gender' => 'required|in:female,male,nonbinary',
+        ]);
+
+        $validatedData['alert_password'] = Hash::make($validatedData['alert_password']);
+
+        $user = User::find($id);
+        if ($user) {
+            $user->update(['made_profile' => true]);
         }
+        
+        $profile->update($validatedData);
+
+        return response()->json([
+            'success' => true,
+            'profile' => $profile,
+            'user' => $user
+        ], 200);
+    } else {
+        return response()->json([
+            'success' => false,
+            'message' => 'Profile not found :(',
+        ], 404);
     }
+}
+
     public function updateProfileImage(Request $request, string $id)
 {
     $profile = Profile::where('id_user', $id)->first();

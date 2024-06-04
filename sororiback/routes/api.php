@@ -33,3 +33,4 @@ Route::middleware('auth:sanctum')->get('/relations/{user}/explore', [RelationCon
 Route::middleware('auth:sanctum')->get('/relations/{user}/pending', [RelationController::class, 'pending'])->name('relations.pending');
 Route::middleware('auth:sanctum')->get('/relations/{user}/{type}', [RelationController::class, 'get_user_relations'])->name('relations.type');
 Route::middleware('auth:sanctum')->post('/profiles/{id}/image', [ProfileController::class, 'updateProfileImage'])->name('profiles.image');
+Route::middleware('auth:sanctum')->post('/routes/{id}/verifyPassword', [RouteController::class, 'verifyPassword'])->name('routes.verifyPassword');

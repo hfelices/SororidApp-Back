@@ -15,6 +15,8 @@ class CreateRoutesTable extends Migration
             $table->dateTime('time_start');
             $table->dateTime('time_end');
             $table->foreignId('user')->constrained('users');
+            $table->enum('share', ['first', 'second', 'extended']);
+            $table->enum('status', ['active', 'ended', 'alarm']);
             $table->timestamps();
         });
     }
