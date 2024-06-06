@@ -150,6 +150,9 @@ class RelationController extends Controller
                         $i++;
                     
                      }
+                usort($users_all, function($a, $b) {
+                    return ($a->status === 'active' && $b->status !== 'active') ? -1 : 1;
+                });
                 return response()->json([
                     'success' => true,
                     'data' => $users_all,
