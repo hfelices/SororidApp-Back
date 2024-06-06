@@ -16,9 +16,15 @@ class RouteFactory extends Factory
     public function definition()
     {
         return [
-            'coordinates_start' => $this->faker->randomFloat(6, -90, 90), 
-            'coordinates_end' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lat_start' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lon_start' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lat_end' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lon_end' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lat_now' => $this->faker->randomFloat(6, -90, 90), 
+            'coordinates_lon_now' => $this->faker->randomFloat(6, -90, 90), 
             'time_start' => $this->faker->dateTime(),
+            'time_estimated' => $this->faker->dateTime(),
+            'time_user_end' => $this->faker->dateTime(),
             'time_end' => $this->faker->dateTime(),
             'user' => User::all()->random()->id,
             'share' => $this->faker->randomElement(['first', 'second', 'extended']),

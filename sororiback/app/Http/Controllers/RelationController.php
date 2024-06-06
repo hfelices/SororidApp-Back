@@ -260,6 +260,7 @@ class RelationController extends Controller
             ], 404);
         }
     }
+    
     public function pending(string $id)
     {
         $relations = Relation::where('user_2', $id)

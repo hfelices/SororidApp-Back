@@ -36,17 +36,25 @@ class RouteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'coordinates_start' => 'required',
-            'coordinates_end' => 'required',
-            'time_end' => 'required',
+            'coordinates_lat_start' => 'required',
+            'coordinates_lon_start' => 'required',
+            'coordinates_lat_end' => 'required',
+            'coordinates_lon_end' => 'required',
+            'time_estimated' => 'required',
+            'time_user_end' => 'required',
             'user' => 'required|exists:users,id',
             'share' => 'required',
         ]);
         $route = Route::create([
-            'coordinates_start' => $request->coordinates_start,
-            'coordinates_end' => $request->coordinates_end,
+            'coordinates_lat_start' => $request->coordinates_lat_start,
+            'coordinates_lon_start' => $request->coordinates_lon_start,
+            'coordinates_lat_end' => $request->coordinates_lat_end,
+            'coordinates_lon_end' => $request->coordinates_lon_end,
+            'coordinates_lon_now' => $request->coordinates_lon_start,
+            'coordinates_lat_now' => $request->coordinates_lat_start,
             'time_start' => new Date,
-            'time_end' => $request->time_end,
+            'time_estimated' => $request->time_estimated,
+            'time_user_end' => $request->time_user_end,
             'user' => $request->user,
             'share' => $request->share,
             'status' => "active",
@@ -137,6 +145,7 @@ class RouteController extends Controller
         $profile = Profile::where('user_id', $user->id)->first();
         if (Hash::check($request->password, $profile->alert_password)) {
             $route->status = 'alarm';
+            $route->time_end = new Date();
             $route->save();
             $warning = new Warning();
             $warning->route = $id;
@@ -146,6 +155,7 @@ class RouteController extends Controller
             return response()->json(['message' => 'Password verified and actions taken accordingly'], 200);
         } else if (Hash::check($request->password, $user->password)){
             $route->status = 'ended';
+            $route->time_end = new Date();
             $route->save();
             return response()->json(['message' => 'Password verified and actions taken accordingly'], 200);
         } else {

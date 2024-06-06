@@ -8,7 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class Route extends Model
 {
     use HasFactory;
-    protected $fillable = ['coordinates_start', 'coordinates_end', 'time_start', 'time_end', 'user'];
+    protected $fillable = [
+        'coordinates_lon_start',
+        'coordinates_lat_start', 
+        'coordinates_lat_end', 
+        'coordinates_lon_end',
+        'coordinates_lat_not',
+        'coordinates_lon_now', 
+        'time_start',
+        'time_estimated',
+        'time_user_end', 
+        'time_end',
+        'share',
+        'status', 
+        'user'];
 
     public function user()
     {
