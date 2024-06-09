@@ -237,6 +237,7 @@ class RelationController extends Controller
     
             $query = User::where('id', '!=', $id)
                 ->whereNotIn('id', array_keys($relatedUserIds))
+                ->where('role', '!=', 'admin')
                 ->with(['profile', 'profile.town']);
     
             if ($request->has('search')) {

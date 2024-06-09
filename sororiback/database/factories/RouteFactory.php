@@ -22,6 +22,8 @@ class RouteFactory extends Factory
             'coordinates_lon_end' => $this->faker->randomFloat(6, -90, 90), 
             'coordinates_lat_now' => $this->faker->randomFloat(6, -90, 90), 
             'coordinates_lon_now' => $this->faker->randomFloat(6, -90, 90), 
+            'distance' => $this->faker->randomFloat(6, -90, 90), 
+            'duration' => $this->faker->randomFloat(6, -90, 90), 
             'time_start' => $this->faker->dateTime(),
             'time_estimated' => $this->faker->dateTime(),
             'time_user_end' => $this->faker->dateTime(),

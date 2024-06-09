@@ -10,12 +10,14 @@ class CreateRoutesTable extends Migration
     {
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
-            $table->decimal('coordinates_lat_start', 8, 6);
-            $table->decimal('coordinates_lon_start', 8, 6);
-            $table->decimal('coordinates_lat_end', 8, 6);
-            $table->decimal('coordinates_lon_end', 8, 6);
-            $table->decimal('coordinates_lat_now', 8, 6);
-            $table->decimal('coordinates_lon_now', 8, 6);
+            $table->decimal('coordinates_lat_start', 18, 16);
+            $table->decimal('coordinates_lon_start', 18, 16);
+            $table->decimal('coordinates_lat_end', 18, 16);
+            $table->decimal('coordinates_lon_end', 18, 16);
+            $table->decimal('coordinates_lat_now', 18, 16)->nullable(); // Added nullable here
+            $table->decimal('coordinates_lon_now', 18, 16)->nullable(); // Added nullable here
+            $table->decimal('distance', 18,16)->nullable(); // Made nullable if applicable
+            $table->decimal('duration', 18,16)->nullable(); // Made nullable if applicable
             $table->dateTime('time_start');
             $table->dateTime('time_estimated');
             $table->dateTime('time_user_end');

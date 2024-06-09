@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Warning;
 use App\Models\User;
 use App\Models\Profile;
+use App\Models\Relation;
+use App\Models\RoutePartner;
+use DateTime;
 
 class RouteController extends Controller
 {
@@ -45,33 +48,90 @@ class RouteController extends Controller
             'user' => 'required|exists:users,id',
             'share' => 'required',
         ]);
+        \Log::info('Request data', $request->all());
+        $coordinatesLatStart = $request->input('coordinates_lat_start');
+        $coordinatesLonStart = $request->input('coordinates_lon_start');
+        $coordinatesLatEnd = $request->input('coordinates_lat_end');
+        $coordinatesLonEnd = $request->input('coordinates_lon_end');
+        if (is_null($coordinatesLatStart) || is_null($coordinatesLonStart) || is_null($coordinatesLatEnd) || is_null($coordinatesLonEnd)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'One or more required fields are missing.',
+            ], 400);
+        }
         $route = Route::create([
-            'coordinates_lat_start' => $request->coordinates_lat_start,
-            'coordinates_lon_start' => $request->coordinates_lon_start,
-            'coordinates_lat_end' => $request->coordinates_lat_end,
-            'coordinates_lon_end' => $request->coordinates_lon_end,
-            'coordinates_lon_now' => $request->coordinates_lon_start,
-            'coordinates_lat_now' => $request->coordinates_lat_start,
-            'time_start' => new Date,
-            'time_estimated' => $request->time_estimated,
-            'time_user_end' => $request->time_user_end,
-            'user' => $request->user,
-            'share' => $request->share,
+            'coordinates_lat_start' => $coordinatesLatStart,
+            'coordinates_lon_start' => $coordinatesLonStart,
+            'coordinates_lat_end' => $coordinatesLatEnd,
+            'coordinates_lon_end' => $coordinatesLonEnd,
+            'coordinates_lat_now' => $coordinatesLatStart, 
+            'coordinates_lon_now' => $coordinatesLonStart, 
+            'time_start' => now(),
+            'time_estimated' => $request->input('time_estimated'),
+            'time_user_end' => $request->input('time_user_end'),
+            'user' => $request->input('user'),
+            'share' => $request->input('share'),
+            'duration' => $request->input('duration'),
+            'distance' => $request->input('distance'),
             'status' => "active",
         ]);
-        if ($route){
+    
+        if ($route) {
+            $relatedUserIds = [];
+            if ($request->share == 'first') {
+                $relatedUsers = Relation::where('user_1', $request->user)
+                    ->whereIn('type', ['first', 'second'])
+                    ->get();
+            } elseif ($request->share == 'second') {
+                $relatedUsers = Relation::where('user_1', $request->user)
+                    ->where('type', 'second')
+                    ->get();
+            } elseif ($request->share == 'extended') {
+                $firstSecondRelations = Relation::where('user_1', $request->user)
+                    ->whereIn('type', ['first', 'second'])
+                    ->get();
+    
+                $blockedUsers = Relation::where('user_1', $request->user)
+                    ->where('type', 'blocked')
+                    ->pluck('user_2');
+                $secondRelations = Relation::whereIn('user_1', $firstSecondRelations->where('type', 'second')->pluck('user_2'))
+                    ->where('type', 'second')
+                    ->whereNotIn('user_2', $blockedUsers)
+                    ->get();
+    
+                $relatedUsers = $firstSecondRelations->merge($secondRelations)->unique('user_2');
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Invalid share type, like, really?, is this a joke?.',
+                ], 400);
+            }
+    
+            foreach ($relatedUsers as $relation) {
+                $relatedUserIds[] = $relation->user_2;
+                $RoutePartner = RoutePartner::create([
+                    'route' => $route->id,
+                    'user' => $relation->user_2,
+                ]);
+                \Log::info($RoutePartner);
+            }
+    
             return response()->json([
-                'success' =>true,
-                'route' => $route
+                'success' => true,
+                'route' => $route,
+                'related_users' => $relatedUserIds,
             ], 201);
-        }else{
+        } else {
             return response()->json([
-                'success' =>false,
-                'message' =>'Error creating route',
-            ],500);
+                'success' => false,
+                'message' => 'Error creating route',
+            ], 500);
         }
     }
-
+    
+    
+    
+     
     /**
      * Display the specified resource.
      */
@@ -79,10 +139,21 @@ class RouteController extends Controller
     {
         $route = Route::find($id);
         if ($route) {
-            return response()->json([
-                'success' => true,
-                'data' => $route,
-            ], 200);
+            $profile = Profile::find($route->user);
+            if($profile){
+                return response()->json([
+                    'success' => true,
+                    'route' => $route, 
+                    'profile' => $profile,
+                ], 200);
+
+            } else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error finding profile',
+                ], 404);
+
+            }
         } else {
             return response()->json([
                 'success' => false,
@@ -162,6 +233,44 @@ class RouteController extends Controller
             return response()->json(['error' => 'Invalid password'], 401);
         }
     }
+
+    public function explore(string $id)
+    {
+        $currentUser = User::find($id);
+        if ($currentUser){
+            $routeIds = RoutePartner::where('user', $currentUser->id)->pluck('route');
+    
+            $routes = Route::whereIn('id', $routeIds)
+                           ->where('status', 'active')
+                           ->get();
+            if ($routes->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'No routes available.',
+                ], 404);
+            }
+            $response = $routes->map(function ($route) {
+                $profile = Profile::find($route->user);
+                \Log::info($route->user);
+                return [
+                    'route' => $route,
+                    'profile' => $profile
+                ];
+            });
+        
+            return response()->json([
+                'success' => true,
+                'data' => $response,
+            ], 200);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found',
+            ], 404);
+        }
+        
+    }
+
     
 }
 
