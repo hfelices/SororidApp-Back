@@ -43,10 +43,14 @@
             color: var(--ion-color-sororilight-shade);
         }
 
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
         .button {
             display: inline-block;
             padding: 10px 20px;
-            margin-top: 20px;
             background-color: var(--ion-color-sororidark);
             color: var(--ion-color-sororidark-contrast);
             text-decoration: none;
@@ -91,7 +95,6 @@
         <ul class="instructions-list">
             <li>Poner el móvil en modo desarrollador:
                 <ul>
-                <br>
                     <li>Ir a <strong>Ajustes</strong></li>
                     <li>Seleccionar <strong>Acerca del teléfono</strong></li>
                     <li>Toque el campo <strong>Número de compilación</strong> 7 veces</li>
@@ -104,9 +107,11 @@
             <li>Descargue el APK y ejecútelo</li>
         </ul>
 
-        <a href="{{ route('download', ['filename' => 'app-debug.apk']) }}" class="button">
-            <i class="fas fa-download"></i> Descargar SororidApp
-        </a>
+        <div class="button-container">
+            <a href="{{ route('download', ['filename' => 'app-debug.apk']) }}" class="button">
+                <i class="fas fa-download"></i> Descargar SororidApp
+            </a>
+        </div>
     </div>
 </body>
 </html>
