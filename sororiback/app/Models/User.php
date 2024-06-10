@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-class User extends Authenticatable
+use Filament\Panel;
+
+class User extends Authenticatable implements FilamentUser, HasAvatar
 {
     use HasFactory, Notifiable, HasApiTokens;
 
@@ -52,7 +56,6 @@ class User extends Authenticatable
         return ucfirst($value);
     }
 
-
     /**
      * Get the locations relation.
      *
@@ -72,8 +75,55 @@ class User extends Authenticatable
     {
         return $this->hasMany(Relation::class, 'user_1');
     }
+
+    /**
+     * Get the profile relation.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function profile()
     {
         return $this->hasOne(Profile::class, 'id_user');
+    }
+
+    /**
+     * Check if the user can access Filament.
+     *
+     * @return bool
+     */
+    public function canAccessFilament(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * Get the Filament avatar URL.
+     *
+     * @return ?string
+     */
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url;
+    }
+
+    /**
+     * Get the Filament name.
+     *
+     * @return string
+     */
+    public function getFilamentName(): string
+    {
+        return $this->profile->name ?? $this->email;
+    }
+
+    /**
+     * Check if the user can access a specific Filament panel.
+     *
+     * @param  string  $panel
+     * @return bool
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->canAccessFilament();
     }
 }
