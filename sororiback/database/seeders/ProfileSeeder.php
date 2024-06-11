@@ -31,7 +31,7 @@ class ProfileSeeder extends Seeder
             'gender' => 'male'
         ]);
         Profile::create([
-            'name' => 'First',
+            'name' => 'Confianza',
             'id_user' => 3,
             'alert_password' => Hash::make('first12345'),
             'birthdate' => '2004-03-13',
@@ -39,7 +39,7 @@ class ProfileSeeder extends Seeder
             'gender' => 'male'
         ]);
         Profile::create([
-            'name' => 'second',
+            'name' => 'Máxima confianza',
             'id_user' => 4,
             'alert_password' => Hash::make('second12345'),
             'birthdate' => '2004-03-13',
@@ -47,7 +47,7 @@ class ProfileSeeder extends Seeder
             'gender' => 'male'
         ]);
         Profile::create([
-            'name' => 'Extended',
+            'name' => 'Confianza Extended',
             'id_user' => 5,
             'alert_password' => Hash::make('extended12345'),
             'birthdate' => '2004-03-13',
