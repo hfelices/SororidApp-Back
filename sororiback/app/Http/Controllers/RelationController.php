@@ -243,8 +243,7 @@ class RelationController extends Controller
             if ($request->has('search')) {
                 $searchTerm = $request->input('search');
                 $query->whereHas('profile', function($q) use ($searchTerm) {
-                    $q->where('name', 'like', "%$searchTerm%")
-                      ->orWhere('description', 'like', "%$searchTerm%");
+                    $q->where('name', 'like', "%$searchTerm%");
                 });
             }
     
@@ -261,6 +260,7 @@ class RelationController extends Controller
             ], 404);
         }
     }
+    
     
     public function pending(string $id)
     {
