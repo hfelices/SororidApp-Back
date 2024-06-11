@@ -108,7 +108,7 @@
         </ul>
 
         <div class="button-container">
-            <a href="{{ route('download', ['filename' => 'app-debug.apk']) }}" class="button">
+            <a href="{{ route('download', ['filename' => 'SororidApp.apk']) }}" class="button">
                 <i class="fas fa-download"></i> Descargar SororidApp
             </a>
         </div>
