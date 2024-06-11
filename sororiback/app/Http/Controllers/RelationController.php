@@ -179,12 +179,12 @@ class RelationController extends Controller
             } elseif ($type == "extended") {
                 $rel_extended = [];
                 $rel_first = Relation::where('user_1', $id)
-                     ->where('type', '=', 'first')
+                     ->where('type', '=', 'second')
                      ->pluck('user_2')
                      ->toArray();
                      foreach ($rel_first as $user_2) {
                         $rel_user_2 = Relation::where('user_1', $user_2)
-                                              ->where('type', '=', 'first')
+                                              ->where('type', '=', 'second')
                                               ->pluck('user_2')
                                               ->toArray();
                         $rel_extended = array_merge($rel_extended, $rel_user_2);
@@ -211,7 +211,7 @@ class RelationController extends Controller
                     }
                     return response()->json([
                         'success' => true,
-                        'data' => $users_extended,
+                        'data' => $users_extended
                     ], 200);
             } else {
                 return response()->json([
