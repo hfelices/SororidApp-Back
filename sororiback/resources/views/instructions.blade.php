@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instrucciones - Sororidapp</title>
-    <link rel="icon" href="{{ asset('storage/SororidApp-icon.jpg') }}" type="image/jpeg">
-
+    <link rel="icon" href="{{ asset('SororidApp.jpg') }}" type="image/jpeg">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap">
@@ -77,6 +76,19 @@
         .instructions-list li {
             margin-bottom: 15px;
         }
+        .header-image{
+            width: 15vw
+        }
+        .header-div{
+            display: flex;
+            flex-direction: column;
+           align-items: center
+        }
+        .font-sororidapp{
+            font-weight: bolder;
+           font-size: 110%;
+           color: #85267c;
+        }
 
         @media (max-width: 768px) {
             .container {
@@ -91,10 +103,11 @@
 </head>
 <body>
     <div class="container">
-    <img src="{{ asset('SororidApp-icon.jpg') }}" alt="Sororidapp" class="header-image">
+        <div class="header-div">
+            <img src="{{ asset('image.png') }}" alt="Sororidapp" class="header-image">
+        </div>
         
-        <h1>Bienvenido a Sororidapp</h1>
-        <p>Sororidapp es la aplicación perfecta para volver a casa de forma segura. Puedes añadir gente a tus contactos y compartir tus rutas con ellos, llamada al 112 de forma rápida y más.</p>
+        <p><strong class="font-sororidapp">SororidApp</strong> es la aplicación perfecta para volver a casa de forma segura. Puedes añadir gente a tus contactos y compartir tus rutas con ellos, llamada al 112 de forma rápida y más.</p>
 
         <h2>Instrucciones para Instalar</h2>
         <ul class="instructions-list">
