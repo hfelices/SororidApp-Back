@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Instrucciones - Sororidapp</title>
+    <link rel="icon" href="{{ asset('storage/SororidApp-icon.jpg') }}" type="image/jpeg">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&display=swap">
     <style>
@@ -88,21 +91,13 @@
 </head>
 <body>
     <div class="container">
+    <img src="{{ asset('SororidApp-icon.jpg') }}" alt="Sororidapp" class="header-image">
+        
         <h1>Bienvenido a Sororidapp</h1>
         <p>Sororidapp es la aplicación perfecta para volver a casa de forma segura. Puedes añadir gente a tus contactos y compartir tus rutas con ellos, llamada al 112 de forma rápida y más.</p>
 
         <h2>Instrucciones para Instalar</h2>
         <ul class="instructions-list">
-            <li>Poner el móvil en modo desarrollador:
-                <ul>
-                    <li>Ir a <strong>Ajustes</strong></li>
-                    <li>Seleccionar <strong>Acerca del teléfono</strong></li>
-                    <li>Toque el campo <strong>Número de compilación</strong> 7 veces</li>
-                    <li>Verá un mensaje a medida que se aproxime a los 7 toques. Una vez completados verá un mensaje notificando que ahora es desarrollador.</li>
-                    <li>Si ya es desarrollador, verá un mensaje que indica que usted ya es desarrollador.</li>
-                    <li>Toque la flecha hacia atrás una vez haya terminado y aparecerá <strong>Opciones de desarrollo</strong> en Ajustes.</li>
-                </ul>
-            </li>
             <li>Acepte instalaciones de orígenes desconocidos</li>
             <li>Descargue el APK y ejecútelo</li>
         </ul>
@@ -115,4 +110,3 @@
     </div>
 </body>
 </html>
-<!-- # Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales -->
