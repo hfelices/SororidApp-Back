@@ -10,7 +10,6 @@ use App\Models\Route;
 use App\Models\RoutePartner;
 use App\Models\Warning;
 use App\Models\Relation;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
