@@ -256,8 +256,7 @@ class RouteController extends Controller
             $routeIds = RoutePartner::where('user', $currentUser->id)->pluck('route');
     
             $routes = Route::whereIn('id', $routeIds)
-                           ->where('status', 'active')
-                           ->orWhere('status', 'ended')
+                           ->whereIn('status', ['active', 'alarm'])
                            ->get();
             if ($routes->isEmpty()) {
                 return response()->json([
