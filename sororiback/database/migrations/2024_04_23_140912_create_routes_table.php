@@ -14,10 +14,10 @@ class CreateRoutesTable extends Migration
             $table->decimal('coordinates_lon_start', 18, 16);
             $table->decimal('coordinates_lat_end', 18, 16);
             $table->decimal('coordinates_lon_end', 18, 16);
-            $table->decimal('coordinates_lat_now', 18, 16)->nullable(); // Added nullable here
-            $table->decimal('coordinates_lon_now', 18, 16)->nullable(); // Added nullable here
-            $table->decimal('distance', 10,2)->nullable(); // Made nullable if applicable
-            $table->decimal('duration', 10,2)->nullable(); // Made nullable if applicable
+            $table->decimal('coordinates_lat_now', 18, 16);
+            $table->decimal('coordinates_lon_now', 18, 16);
+            $table->decimal('distance', 10,2);
+            $table->decimal('duration', 10,2);
             $table->dateTime('time_start');
             $table->dateTime('time_estimated');
             $table->dateTime('time_user_end');

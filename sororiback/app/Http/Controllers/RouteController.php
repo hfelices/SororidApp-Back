@@ -140,19 +140,33 @@ class RouteController extends Controller
         $route = Route::find($id);
         if ($route) {
             $profile = Profile::find($route->user);
-            if($profile){
+            if ($profile) {
+                $routePartner = RoutePartner::where('route', $route->id)
+                                             ->where('user', auth()->id())
+                                             ->first();
+                if ($routePartner) {
+                    $routePartner->update([
+                        'viewed' => true,
+                        'coordinates_lat_last' => $route->coordinates_lat_now,
+                        'coordinates_lon_last' => $route->coordinates_lon_now,
+                    ]);
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error finding route partner',
+                    ], 404);
+                }
+    
                 return response()->json([
                     'success' => true,
-                    'route' => $route, 
+                    'route' => $route,
                     'profile' => $profile,
                 ], 200);
-
-            } else{
+            } else {
                 return response()->json([
                     'success' => false,
                     'message' => 'Error finding profile',
                 ], 404);
-
             }
         } else {
             return response()->json([
@@ -161,6 +175,7 @@ class RouteController extends Controller
             ], 404);
         }
     }
+    
 
     /**
      * Update the specified resource in storage.
@@ -242,6 +257,7 @@ class RouteController extends Controller
     
             $routes = Route::whereIn('id', $routeIds)
                            ->where('status', 'active')
+                           ->orWhere('status', 'ended')
                            ->get();
             if ($routes->isEmpty()) {
                 return response()->json([
@@ -274,3 +290,4 @@ class RouteController extends Controller
     
 }
 
+# Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales

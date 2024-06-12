@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class RoutePartner extends Model
 {
     use HasFactory;
-    protected $fillable = ['route', 'user'];
+    protected $fillable = ['route', 'user', 'viewed', 'coordinates_lon_last', 'coordinates_lat_last'];
 
     public function route()
     {

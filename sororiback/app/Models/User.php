@@ -127,3 +127,4 @@ class User extends Authenticatable implements FilamentUser, HasAvatar
         return $this->canAccessFilament();
     }
 }
+// Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales

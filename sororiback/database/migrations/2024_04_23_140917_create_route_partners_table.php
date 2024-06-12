@@ -12,6 +12,9 @@ class CreateRoutePartnersTable extends Migration
             $table->id();
             $table->foreignId('route')->constrained('routes');
             $table->foreignId('user')->constrained('users');
+            $table->boolean('viewed')->default(false);
+            $table->decimal('coordinates_lat_last', 18, 16)->nullable();
+            $table->decimal('coordinates_lon_last', 18, 16)->nullable();
             $table->timestamps();
         });
     }
