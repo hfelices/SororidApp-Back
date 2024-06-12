@@ -291,4 +291,3 @@ class RelationController extends Controller
         }
     }
 }
-# Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales

@@ -83,3 +83,5 @@ class LoginRequest extends FormRequest
         return Str::transliterate(Str::lower($this->input('email')).'|'.$this->ip());
     }
 }
+
+# Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales

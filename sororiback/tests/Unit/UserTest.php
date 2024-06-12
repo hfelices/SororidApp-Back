@@ -46,3 +46,5 @@ class UserTest extends TestCase
         $this->assertContains($user->gender, ['female', 'male', 'nonbinary']);
     }
 }
+
+# Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales

@@ -48,7 +48,6 @@ class RouteController extends Controller
             'user' => 'required|exists:users,id',
             'share' => 'required',
         ]);
-        \Log::info('Request data', $request->all());
         $coordinatesLatStart = $request->input('coordinates_lat_start');
         $coordinatesLonStart = $request->input('coordinates_lon_start');
         $coordinatesLatEnd = $request->input('coordinates_lat_end');
@@ -113,7 +112,6 @@ class RouteController extends Controller
                     'route' => $route->id,
                     'user' => $relation->user_2,
                 ]);
-                \Log::info($RoutePartner);
             }
     
             return response()->json([
@@ -266,7 +264,6 @@ class RouteController extends Controller
             }
             $response = $routes->map(function ($route) {
                 $profile = Profile::find($route->user);
-                \Log::info($route->user);
                 return [
                     'route' => $route,
                     'profile' => $profile
@@ -288,5 +285,3 @@ class RouteController extends Controller
 
     
 }
-
-# Todo el código de backend (excepto la base de laravel, filament y otros paquetes) hecho por: Mark López Morales
